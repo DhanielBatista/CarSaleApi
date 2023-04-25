@@ -38,3 +38,5 @@ C:\Users\Hengrist\source\repos\ApiCarSale\ApiCarSale\obj\Debug\net6.0\refint\Api
 C:\Users\Hengrist\source\repos\ApiCarSale\ApiCarSale\obj\Debug\net6.0\ApiCarSale.pdb
 C:\Users\Hengrist\source\repos\ApiCarSale\ApiCarSale\obj\Debug\net6.0\ApiCarSale.genruntimeconfig.cache
 C:\Users\Hengrist\source\repos\ApiCarSale\ApiCarSale\obj\Debug\net6.0\ref\ApiCarSale.dll
+C:\Users\Hengrist\source\repos\ApiCarSale\ApiCarSale\bin\Debug\net6.0\AutoMapper.dll
+C:\Users\Hengrist\source\repos\ApiCarSale\ApiCarSale\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
