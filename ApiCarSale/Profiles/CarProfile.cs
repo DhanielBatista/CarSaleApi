@@ -1,5 +1,5 @@
-﻿using ApiCarSale.Dtos;
-using ApiCarSale.Models;
+﻿using ApiCarSale.Models;
+using ApiCarSale.Models.Dtos;
 using AutoMapper;
 
 namespace ApiCarSale.Profiles

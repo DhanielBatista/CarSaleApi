@@ -13,5 +13,7 @@ namespace ApiCarSale.Models
         public string? Marca { get; set; } 
         public int Ano { get; set; }
         public double Preco { get; set; }
+        public DateTime DataCadastro { get; set; } = DateTime.Now;
+
     }
 }
