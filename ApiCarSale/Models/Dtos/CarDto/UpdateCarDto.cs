@@ -1,6 +1,7 @@
-﻿namespace ApiCarSale.Models.Dtos
+﻿namespace ApiCarSale.Models.Dtos.CarDto
+    
 {
-    public class CreateCarDto
+    public class UpdateCarDto
     {
         public string? Modelo { get; set; }
         public string? Marca { get; set; }

@@ -1,4 +1,4 @@
-﻿using ApiCarSale.Models.Dtos;
+﻿using ApiCarSale.Models.Dtos.CarDto;
 using ApiCarSale.Models;
 using ApiCarSale.Services;
 using AutoMapper;

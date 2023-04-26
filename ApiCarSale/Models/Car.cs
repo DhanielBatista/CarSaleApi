@@ -10,9 +10,13 @@ namespace ApiCarSale.Models
         public string? Id { get; set; }
         [BsonElement("Modelo")]
         public string? Modelo { get; set; }
-        public string? Marca { get; set; } 
+        [BsonElement("Marca")]
+        public string? Marca { get; set; }
+        [BsonElement("Ano")]
         public int Ano { get; set; }
+        [BsonElement("Preco")]
         public double Preco { get; set; }
+        [BsonElement("DataCadastro")]
         public DateTime DataCadastro { get; set; } = DateTime.Now;
 
     }
