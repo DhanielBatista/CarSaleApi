@@ -7,7 +7,7 @@ namespace ApiCarSale.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string? Id { get; set; }
+        public string? _id { get; set; }
         [BsonElement("Modelo")]
         public string? Modelo { get; set; }
         [BsonElement("Marca")]
@@ -18,6 +18,7 @@ namespace ApiCarSale.Models
         public double Preco { get; set; }
         [BsonElement("DataCadastro")]
         public DateTime DataCadastro { get; set; } = DateTime.Now;
+
 
     }
 }

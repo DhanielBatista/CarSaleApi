@@ -38,7 +38,7 @@ namespace ApiCarSale.Controllers
 
             await _carService.CreateAsync(car);
 
-            return CreatedAtAction(nameof(GetCars), new { id = car.Id }, car);
+            return CreatedAtAction(nameof(GetCars), new { id = car._id }, car);
         }
 
         [HttpPut("{id:length(24)}")]

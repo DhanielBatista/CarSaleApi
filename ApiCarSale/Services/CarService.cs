@@ -21,13 +21,13 @@ namespace ApiCarSale.Services
         public async Task<List<Car>> GetAsync() => 
             await _carCollection.Find(x => true).ToListAsync();
         public async Task<Car?> GetAsync(string id) => 
-            await _carCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
+            await _carCollection.Find(x => x._id == id).FirstOrDefaultAsync();
         public async Task CreateAsync(Car newCar) =>
             await _carCollection.InsertOneAsync(newCar);
         public async Task UpdateAsync(string id, Car updatedCar) =>
-            await _carCollection.ReplaceOneAsync(x => x.Id == id, updatedCar);
+            await _carCollection.ReplaceOneAsync(x => x._id == id, updatedCar);
         public async Task DeleteAsync(string id) =>
-            await _carCollection.DeleteOneAsync(x => x.Id == id);
+            await _carCollection.DeleteOneAsync(x => x._id == id);
 
     }
 }

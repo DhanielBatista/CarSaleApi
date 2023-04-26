@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.Configure<CarSaleDatabaseSettings>(builder.Configuration.GetSection("CarSaleDatabase"));
 builder.Services.AddSingleton<CarService>();
+builder.Services.AddSingleton<SellCarService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
