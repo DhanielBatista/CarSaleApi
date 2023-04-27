@@ -18,6 +18,8 @@ namespace ApiCarSale.Models
         public double Preco { get; set; }
         [BsonElement("DataCadastro")]
         public DateTime DataCadastro { get; set; } = DateTime.Now;
+        [BsonElement("CarroVenda")]
+        public bool CarroVendido { get; set; } = false;
 
 
     }
