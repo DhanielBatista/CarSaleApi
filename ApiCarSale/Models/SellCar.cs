@@ -16,9 +16,11 @@ namespace ApiCarSale.Models
         public Car Carro { get; set; }
         [BsonElement("ValorDesconto")]
         public double ValorDesconto { get; set; }
+        [BsonElement("ValorVenda")]
+        public double ValorVenda { get; set; }
+
         [BsonElement("DataVenda")]
         public DateTime DataVenda { get; set; } = DateTime.Now;
-
 
 
     }

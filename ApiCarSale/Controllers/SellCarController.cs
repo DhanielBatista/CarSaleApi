@@ -47,7 +47,8 @@ namespace ApiCarSale.Controllers
                 {
                     return BadRequest("Este Veiculo foi vendido!");
                 }
-                await _carService.UpdateAsync(car._id,car) ;
+                car.CarroVendido = true;
+                await _carService.UpdateAsync(sellCar.CarroId,car) ;
                 await _sellCarService.CreateAsync(sellCar);
 
                 return Ok(sellCar);
