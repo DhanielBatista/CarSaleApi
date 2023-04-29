@@ -13,15 +13,19 @@ namespace ApiCarSale.Models
         [BsonElement("CarroId")]
         [BsonRepresentation(BsonType.ObjectId)]
         public string CarroId { get; set; }
-        public Car Carro { get; set; }
+        public Car? Carro { get; set; }
         [BsonElement("ValorDesconto")]
         public double ValorDesconto { get; set; }
         [BsonElement("ValorVenda")]
-        public double ValorVenda { get; set; }
+        public double ValorVenda { get { return CalculoVenda(); } }
 
         [BsonElement("DataVenda")]
         public DateTime DataVenda { get; set; } = DateTime.Now;
 
+        public double CalculoVenda()
+        {
+          return  Carro.Preco - ValorDesconto;
+        }
 
     }
 }
