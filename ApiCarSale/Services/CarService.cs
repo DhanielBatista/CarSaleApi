@@ -20,6 +20,7 @@ namespace ApiCarSale.Services
 
         public async Task<List<Car>> GetAsync() => 
             await _carCollection.Find(x => true).ToListAsync();
+
         public async Task<Car?> GetAsync(string id) => 
             await _carCollection.Find(x => x._id == id).FirstOrDefaultAsync();
         public async Task CreateAsync(Car newCar) =>

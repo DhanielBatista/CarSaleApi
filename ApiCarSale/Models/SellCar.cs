@@ -20,7 +20,7 @@ namespace ApiCarSale.Models
         public double ValorVenda { get { return CalculoVenda(); } }
 
         [BsonElement("DataVenda")]
-        public DateTime DataVenda { get; set; } = DateTime.Now;
+        public DateTime DataVenda { get; set; } = DateTime.Parse(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")); 
 
         public double CalculoVenda()
         {

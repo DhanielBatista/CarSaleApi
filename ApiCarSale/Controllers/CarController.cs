@@ -3,6 +3,7 @@ using ApiCarSale.Models;
 using ApiCarSale.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver;
 
 namespace ApiCarSale.Controllers
 {
@@ -12,14 +13,25 @@ namespace ApiCarSale.Controllers
     {
         private readonly IMapper _mapper;
         private readonly CarService _carService;
+
         public CarController(CarService carService, IMapper mapper) =>
         (_carService, _mapper) = (carService, mapper);
 
 
         [HttpGet]
-        public async Task<List<Car>> GetCars() =>
-            await _carService.GetAsync();
+        public async Task<List<Car>> GetCars([FromQuery] int? carYear = null)
+        {
+            var cars = Builders<Car>.Filter.Empty;
+            if (carYear.HasValue)
+            {
+                cars &= Builders<Car>.Filter.Eq(c => c.Ano, carYear);
 
+
+            }
+            return await _carService.GetAsync();
+            
+
+        }
         [HttpGet("{id:length(24)}")]
         public async Task<ActionResult<Car>> GetCarId(string id)
         {

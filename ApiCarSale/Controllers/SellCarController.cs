@@ -19,8 +19,6 @@ namespace ApiCarSale.Controllers
         [HttpGet]
         public async Task<List<SellCar>> GetSellCars() 
         {
-           
-
             return await _sellCarService.GetAsync();
         }
            

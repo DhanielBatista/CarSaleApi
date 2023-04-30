@@ -17,7 +17,7 @@ namespace ApiCarSale.Models
         [BsonElement("Preco")]
         public double Preco { get; set; }
         [BsonElement("DataCadastro")]
-        public DateTime DataCadastro { get; set; } = DateTime.Now;
+        public DateTime DataCadastro { get; set; } = DateTime.Parse(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
         [BsonElement("CarroVenda")]
         public bool CarroVendido { get; set; } = false;
 
