@@ -1,6 +1,6 @@
 using ApiCarSale.Models;
 using ApiCarSale.Services;
-
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +9,12 @@ builder.Services.Configure<CarSaleDatabaseSettings>(builder.Configuration.GetSec
 builder.Services.AddSingleton<CarService>();
 builder.Services.AddSingleton<SellCarService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options
+        .ModelBinderProviders
+        .Insert(0, new CustomDateTimeModelBinderProvider());
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

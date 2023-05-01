@@ -18,22 +18,26 @@ namespace ApiCarSale.Controllers
 
 
         [HttpGet]
-        public async Task<List<Car>> GetCars([FromQuery] bool carSell)
+        public async Task<List<Car>> GetCars([FromQuery] bool? carSell)
         {
-            if(carSell == true)
+            if(carSell != null)
             {
-                var filter = Builders<Car>.Filter.Eq(c => c.CarroVendido, carSell);
-                var cars = await _carService.GetAsync(filter);
-                return cars;
+                if (carSell == true)
+                {
+                    var filter = Builders<Car>.Filter.Eq(c => c.CarroVendido, carSell);
+                    var cars = await _carService.GetAsync(filter);
+                    return cars;
+                }
+                else
+                {
+                    var filter = Builders<Car>.Filter.Eq(c => c.CarroVendido, carSell);
+                    var cars = await _carService.GetAsync(filter);
+                    return cars;
+                }
+
             }
-            else
-            {
-                var filter = Builders<Car>.Filter.Eq(c => c.CarroVendido, carSell);
-                var cars = await _carService.GetAsync(filter);
-                return cars;
-            }
-            
-           return await _carService.GetAsync();
+
+            return await _carService.GetAsync();
 
         }
         [HttpGet("{id:length(24)}")]

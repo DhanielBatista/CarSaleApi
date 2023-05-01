@@ -3,6 +3,7 @@ using ApiCarSale.Models.Dtos.SellCarDto;
 using ApiCarSale.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 
 namespace ApiCarSale.Controllers
 {
@@ -14,21 +15,40 @@ namespace ApiCarSale.Controllers
         private readonly SellCarService _sellCarService;
         private readonly CarService _carService;
         public SellCarController(SellCarService sellCarService, IMapper mapper, CarService carService) =>
-            (_sellCarService, _mapper,_carService ) = (sellCarService,mapper, carService );
+            (_sellCarService, _mapper, _carService) = (sellCarService, mapper, carService);
 
         [HttpGet]
-        public async Task<List<SellCar>> GetSellCars() 
+        public async Task<List<SellCar>> GetSellCars()
         {
             return await _sellCarService.GetAsync();
         }
-           
-        
+
+        [HttpGet]
+        [Route("/SalesCalculation/{initialDate}/{finalDate}")]
+        public async Task<double> GetSalesCalculation(DateTime initialDate, DateTime finalDate)
+        {
+
+
+            var sellCars = await _sellCarService.GetAsync();
+            double totalSalesValue = 0;
+
+            foreach (var sellCar in sellCars)
+            {
+                if (sellCar.DataVenda >= initialDate && sellCar.DataVenda <= finalDate)
+                {
+                    totalSalesValue += sellCar.ValorVenda;
+                }
+
+            }
+            return totalSalesValue;
+        }
+
         [HttpGet("{id:length(24)}")]
         public async Task<ActionResult<SellCar>> GetSellCarId(string id)
         {
             var sellCar = await _sellCarService.GetAsync(id);
 
-            if(sellCar == null)
+            if (sellCar == null)
             {
                 return NotFound();
             }
@@ -39,27 +59,27 @@ namespace ApiCarSale.Controllers
         {
             var sellCar = _mapper.Map<SellCar>(sellCarDto);
             var car = await _carService.GetAsync(sellCar.CarroId);
-            if(car != null)
+            if (car != null)
             {
-                if(car.CarroVendido == true)
+                if (car.CarroVendido == true)
                 {
                     return BadRequest("Este Veiculo foi vendido!");
                 }
                 sellCar.Carro = car;
                 car.CarroVendido = true;
-                await _carService.UpdateAsync(sellCar.CarroId,car) ;
+                await _carService.UpdateAsync(sellCar.CarroId, car);
                 await _sellCarService.CreateAsync(sellCar);
 
                 return Ok(sellCar);
             }
             return NotFound();
-          
+
         }
         [HttpPut("{id:length(24)}")]
         public async Task<IActionResult> UpdateSellCar(string id, [FromBody] UpdateSellCarDto sellCarDto)
         {
             var sellcar = await _sellCarService.GetAsync(id);
-            if(sellcar == null)
+            if (sellcar == null)
             {
                 return NotFound();
             }
@@ -76,6 +96,10 @@ namespace ApiCarSale.Controllers
             {
                 return NotFound();
             }
+            var car = await _carService.GetAsync(sellCar.CarroId);
+            sellCar.Carro = car;
+            car.CarroVendido = false;
+            await _carService.UpdateAsync(sellCar.CarroId, car);
             await _sellCarService.DeleteAsync(id);
 
             return NoContent();
