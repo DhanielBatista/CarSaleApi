@@ -13,23 +13,27 @@ namespace ApiCarSale.Controllers
     {
         private readonly IMapper _mapper;
         private readonly CarService _carService;
-
         public CarController(CarService carService, IMapper mapper) =>
         (_carService, _mapper) = (carService, mapper);
 
 
         [HttpGet]
-        public async Task<List<Car>> GetCars([FromQuery] int? carYear = null)
+        public async Task<List<Car>> GetCars([FromQuery] bool carSell)
         {
-            var cars = Builders<Car>.Filter.Empty;
-            if (carYear.HasValue)
+            if(carSell == true)
             {
-                cars &= Builders<Car>.Filter.Eq(c => c.Ano, carYear);
-
-
+                var filter = Builders<Car>.Filter.Eq(c => c.CarroVendido, carSell);
+                var cars = await _carService.GetAsync(filter);
+                return cars;
             }
-            return await _carService.GetAsync();
+            else
+            {
+                var filter = Builders<Car>.Filter.Eq(c => c.CarroVendido, carSell);
+                var cars = await _carService.GetAsync(filter);
+                return cars;
+            }
             
+           return await _carService.GetAsync();
 
         }
         [HttpGet("{id:length(24)}")]
