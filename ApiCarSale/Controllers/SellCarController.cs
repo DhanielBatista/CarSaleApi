@@ -27,8 +27,6 @@ namespace ApiCarSale.Controllers
         [Route("/SalesCalculation/{initialDate}/{finalDate}")]
         public async Task<double> GetSalesCalculation(DateTime initialDate, DateTime finalDate)
         {
-
-
             var sellCars = await _sellCarService.GetAsync();
             double totalSalesValue = 0;
 
@@ -69,7 +67,6 @@ namespace ApiCarSale.Controllers
                 car.CarroVendido = true;
                 await _carService.UpdateAsync(sellCar.CarroId, car);
                 await _sellCarService.CreateAsync(sellCar);
-
                 return Ok(sellCar);
             }
             return NotFound();

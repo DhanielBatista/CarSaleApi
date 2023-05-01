@@ -18,26 +18,74 @@ namespace ApiCarSale.Controllers
 
 
         [HttpGet]
-        public async Task<List<Car>> GetCars([FromQuery] bool? carSell)
+        public async Task<List<Car>> GetCars([FromQuery] bool? carSell, [FromQuery] int? carYear,[FromQuery] string? carModel, 
+            [FromQuery] double? priceGreaterThan, [FromQuery] double? priceLessThan, [FromQuery] DateTime? registerGreatherThan, [FromQuery] DateTime? registerLessThan)
         {
-            if(carSell != null)
+            var filterList = new List<FilterDefinition<Car>>();
+
+            if (carSell != null)
             {
                 if (carSell == true)
                 {
-                    var filter = Builders<Car>.Filter.Eq(c => c.CarroVendido, carSell);
-                    var cars = await _carService.GetAsync(filter);
-                    return cars;
+                    var sellFilter = Builders<Car>.Filter.Eq(c => c.CarroVendido, carSell);
+                    filterList.Add(sellFilter);
                 }
                 else
                 {
-                    var filter = Builders<Car>.Filter.Eq(c => c.CarroVendido, carSell);
-                    var cars = await _carService.GetAsync(filter);
-                    return cars;
+                    var sellFilter = Builders<Car>.Filter.Eq(c => c.CarroVendido, carSell);
+                    filterList.Add(sellFilter);
                 }
+            }
+
+            if(carYear != null)
+            {   
+                var yearFilter = Builders<Car>.Filter.Eq(c => c.Ano, carYear);
+                filterList.Add(yearFilter);
+            }
+
+            if(carModel != null)
+            {
+                var modelFilter = Builders<Car>.Filter.Eq(c => c.Modelo, carModel);
+                filterList.Add(modelFilter);
+            }
+
+            if(priceGreaterThan != null)
+            {
+                var priceGreaterFilter = Builders<Car>.Filter.Gt(c => c.Preco, priceGreaterThan);
+                filterList.Add(priceGreaterFilter);
+               
+            }
+
+            if(priceLessThan != null)
+            {
+                var priceLessfilter = Builders<Car>.Filter.Lt(c => c.Preco, priceLessThan);
+                filterList.Add(priceLessfilter);
+            }
+
+            if (registerGreatherThan != null)
+            {
+                var registerGreatherfilter = Builders<Car>.Filter.Gt(c => c.DataCadastro, registerGreatherThan);
+                filterList.Add(registerGreatherfilter);
 
             }
 
-            return await _carService.GetAsync();
+            if (registerLessThan != null)
+            {
+                var registerLessfilter = Builders<Car>.Filter.Lt(c => c.DataCadastro, registerLessThan);
+                filterList.Add(registerLessfilter);
+
+            }
+
+            if (filterList.Count == 0)
+            {
+                var carros = await _carService.GetAsync();
+                return carros;
+            }
+
+            var combinedFilter = Builders<Car>.Filter.And(filterList);
+            var cars = await _carService.GetAsync(combinedFilter);
+
+            return cars;
 
         }
         [HttpGet("{id:length(24)}")]
