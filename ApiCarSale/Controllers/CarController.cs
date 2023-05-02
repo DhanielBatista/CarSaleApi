@@ -11,6 +11,7 @@ namespace ApiCarSale.Controllers
     [Route("api/[controller]")]
     public class CarController : ControllerBase
     {
+       
         private readonly IMapper _mapper;
         private readonly CarService _carService;
         public CarController(CarService carService, IMapper mapper) =>
@@ -19,8 +20,12 @@ namespace ApiCarSale.Controllers
 
         [HttpGet]
         public async Task<List<Car>> GetCars([FromQuery] bool? carSell, [FromQuery] int? carYear,[FromQuery] string? carModel, 
-            [FromQuery] double? priceGreaterThan, [FromQuery] double? priceLessThan, [FromQuery] DateTime? registerGreatherThan, [FromQuery] DateTime? registerLessThan)
+            [FromQuery] double? priceGreaterThan, [FromQuery] double? priceLessThan, [FromQuery] DateTime? registerGreatherThan, 
+            [FromQuery] DateTime? registerLessThan,[FromQuery] int pageNumber)
         {
+            int skip = (pageNumber - 1) * 5;
+            int limit = 5;
+
             var filterList = new List<FilterDefinition<Car>>();
 
             if (carSell != null)
@@ -75,15 +80,17 @@ namespace ApiCarSale.Controllers
                 filterList.Add(registerLessfilter);
 
             }
-
+           
             if (filterList.Count == 0)
             {
-                var carros = await _carService.GetAsync();
+                var carros = await _carService.GetAsync(skip,limit);
                 return carros;
             }
 
             var combinedFilter = Builders<Car>.Filter.And(filterList);
-            var cars = await _carService.GetAsync(combinedFilter);
+            var cars = await _carService.GetAsync(skip,limit,combinedFilter);
+
+            
 
             return cars;
 

@@ -18,13 +18,15 @@ namespace ApiCarSale.Services
                 carSaleDatabaseSettings.Value.CarCollectionName);
         }
 
-        public async Task<List<Car>> GetAsync(FilterDefinition<Car> filtro = null)
+        public async Task<List<Car>> GetAsync(int skip, int limit, FilterDefinition<Car> filtro = null)
         {
-            var carros = await _carCollection.Find(filtro ?? Builders<Car>.Filter.Empty).ToListAsync();
+            var carros = await _carCollection.Find(filtro ?? Builders<Car>.Filter.Empty)
+                                     .Skip(skip)
+                                     .Limit(limit)
+                                     .ToListAsync();
             return carros;
         }
-        //=> 
-        //    await _carCollection.Find(x => true).ToListAsync();
+       
 
         public async Task<Car?> GetAsync(string id) => 
             await _carCollection.Find(x => x._id == id).FirstOrDefaultAsync();
