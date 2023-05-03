@@ -37,7 +37,13 @@ namespace ApiCarSale.Services
                     })
             };
         }
+        public async Task<List<SellCar>> GetByDateAsync(DateTime initialDate, DateTime finalDate)
+        {
+            var filter = Builders<SellCar>.Filter.Gte(x => x.DataVenda, initialDate) &
+                         Builders<SellCar>.Filter.Lte(x => x.DataVenda, finalDate);
 
+            return await _sellCarCollection.Find(filter).ToListAsync();
+        }
         public async Task<List<SellCar>> GetAsync()
         {
             using var agregation = _sellCarCollection.Aggregate(_pipeline);

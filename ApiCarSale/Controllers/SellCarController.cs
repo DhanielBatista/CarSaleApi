@@ -3,6 +3,7 @@ using ApiCarSale.Models.Dtos.SellCarDto;
 using ApiCarSale.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver;
 using System.Globalization;
 
 namespace ApiCarSale.Controllers
@@ -22,22 +23,23 @@ namespace ApiCarSale.Controllers
         {
             return await _sellCarService.GetAsync();
         }
-
-        [HttpGet]
-        [Route("/SalesCalculation/{initialDate}/{finalDate}")]
-        public async Task<double> GetSalesCalculation(DateTime initialDate, DateTime finalDate)
+        
+        [HttpPost]
+        [Route("/api/SellCar/Calculator")]
+        public async Task<double> PostSaleCalculator(SearchSellCarDto searchDto)
         {
-            var sellCars = await _sellCarService.GetAsync();
-            double totalSalesValue = 0;
+            var initialDate = searchDto.InitialDate;
+            var finalDate = searchDto.FinalDate;
+            var filter = Builders<SellCar>.Filter.Gte(x => x.DataVenda, searchDto.InitialDate) &
+                Builders<SellCar>.Filter.Lte(x => x.DataVenda, searchDto.FinalDate);
+            var sellCars = await _sellCarService.GetByDateAsync(initialDate, finalDate);
 
+            double totalSalesValue = 0;
             foreach (var sellCar in sellCars)
             {
-                if (sellCar.DataVenda >= initialDate && sellCar.DataVenda <= finalDate)
-                {
-                    totalSalesValue += sellCar.ValorVenda;
-                }
-
+                totalSalesValue += sellCar.ValorVenda;
             }
+
             return totalSalesValue;
         }
 

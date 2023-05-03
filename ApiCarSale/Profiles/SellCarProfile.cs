@@ -10,6 +10,7 @@ namespace ApiCarSale.Profiles
         {
             CreateMap<CreateSellCarDto, SellCar>();
             CreateMap<UpdateSellCarDto, SellCar>();
+            CreateMap<SearchSellCarDto, SellCar>();
         }
     }
 }

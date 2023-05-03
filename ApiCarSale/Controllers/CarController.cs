@@ -4,6 +4,7 @@ using ApiCarSale.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
+using System.Net;
 
 namespace ApiCarSale.Controllers
 {
@@ -19,11 +20,15 @@ namespace ApiCarSale.Controllers
 
 
         [HttpGet]
-        public async Task<List<Car>> GetCars([FromQuery] bool? carSell, [FromQuery] int? carYear,[FromQuery] string? carModel, 
+        public async Task<ActionResult<List<Car>>> GetCars([FromQuery] bool? carSell, [FromQuery] int? carYear,[FromQuery] string? carModel, 
             [FromQuery] double? priceGreaterThan, [FromQuery] double? priceLessThan, [FromQuery] DateTime? registerGreatherThan, 
-            [FromQuery] DateTime? registerLessThan,[FromQuery] int pageNumber)
+            [FromQuery] DateTime? registerLessThan,[FromQuery] int? pageNumber)
         {
-            int skip = (pageNumber - 1) * 5;
+            if(!pageNumber.HasValue || pageNumber <= 0)
+            {
+                return BadRequest("O número da página deve ser maior que zero.");
+            }
+            int skip = (int) (pageNumber - 1) * 5;
             int limit = 5;
 
             var filterList = new List<FilterDefinition<Car>>();
